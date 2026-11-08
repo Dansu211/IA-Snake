@@ -73,3 +73,12 @@ snake-ai/
 - **R:** Reiniciar tras una colisión.
 - **Q / ESC:** Salir del juego.
 
+1. Entrenar a la IA (Modo rápido sin gráficos)
+powershell
+python.exe main.py --mode train --episodes 300
+
+.venv\Scripts\python.exe main.py --mode train --episodes 500
+
+2. Observar a la IA jugar (Modo visual con Pygame)
+
+.venv\Scripts\python.exe main.py --mode eval

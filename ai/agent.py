@@ -28,11 +28,13 @@ class DQNAgent:
         self.batch_size = 100         # Tamaño de minilote para entrenar la red
         self.memory_size = 100_000    # Capacidad máxima del buffer de experiencias
 
+        self.input_size = 20          # Vector de estado ampliado (antes era 11)
+
         # Red neuronal principal (Policy Network)
-        self.model = SnakeNet(input_size=11, output_size=3)
+        self.model = SnakeNet(input_size=self.input_size, output_size=3)
 
         # Red objetivo (Target Network) para estabilizar los valores futuros
-        self.target_model = SnakeNet(input_size=11, output_size=3)
+        self.target_model = SnakeNet(input_size=self.input_size, output_size=3)
         self.update_target_network()
         self.target_model.eval()
 
@@ -123,5 +125,12 @@ class DQNAgent:
 
     def load(self, filepath: str) -> None:
         """Carga los pesos del modelo desde disco."""
-        self.model.load_state_dict(torch.load(filepath, weights_only=True))
+        checkpoint = torch.load(
+            filepath,
+            map_location="cpu",
+            weights_only=True
+    )
+
+        self.model.load_state_dict(checkpoint)
         self.update_target_network()
+        print(f"Pesos cargados correctamente desde: {filepath}")
